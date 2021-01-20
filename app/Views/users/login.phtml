@@ -1,0 +1,36 @@
+<?php
+require APPROOT . '/Views/inc/header.phtml';
+require APPROOT . '/Views/inc/navigation.phtml'; ?>
+<div class="login-wrapper">
+    <div class="login-inner-div">
+        <form action="<?php echo  URLROOT; ?>/users/login" method="POST" >
+            <h2 class="login-title">S'identifier</h2>
+            <p class="login-subtitle">Pour Cotinuer vers l'administartion</p>
+            <input type="text"
+                   name="email"
+                   id="email"
+                   placeholder="Email"
+                   class="<?php echo ( !empty( $data['emailError'] ) ) ? 'invalid' : ''; ?>"
+                   value="<?php echo $data["email"] ?>"
+            >
+            <span class="invalid-feedback"><?php echo $data["emailError"] ?></span>
+
+            <input type="password"
+                   name="password"
+                   id="password"
+                   placeholder="Mot de passe"
+                   class="<?php echo ( !empty( $data['passwordError'] ) ) ? 'invalid' : ''; ?>"
+                   value="<?php echo $data["password"]?>"
+            >
+            <span class="invalid-feedback"><?php echo $data["passwordError"] ?></span>
+
+            <div class="submit-div">
+            <input type="submit" name="submit_button" class="sumbit_btn" value="Envoyer">
+            </div>
+            <p class="login-text">Pas de compte ? <a href="<?php echo URLROOT ;?>/users/register">Cliquez-ici pour en Créer</p>
+        </form>
+
+</div>
+
+<?php require APPROOT . '/Views/inc/footer.phtml'; ?>
+

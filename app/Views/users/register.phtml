@@ -1,0 +1,50 @@
+<?php
+require APPROOT . '/Views/inc/header.phtml';
+require APPROOT . '/Views/inc/navigation.phtml'; ?>
+<div class="login-wrapper">
+    <div class="login-inner-div">
+        <form action="<?php echo  URLROOT; ?>/users/register" method="POST" >
+            <h2 class="login-title">S'enregistrer</h2>
+            <p class="login-subtitle">Pour Cotinuer vers l'administartion</p>
+            <input type="text"
+                   name="username"
+                   id="username"
+                   placeholder="Username"
+                   class="<?php echo ( !empty( $data['usernameError'] ) ) ? 'invalid' : ''; ?>"
+                   value="<?php echo $data["username"]?>">
+            <span  class="invalid-feedback"><?php echo $data["usernameError"] ?></span>
+
+            <input  type="text"
+                    name="email"
+                    id="email"
+                    placeholder="Email"
+                    class="<?php echo ( !empty( $data['emailError'] ) ) ? 'invalid' : ''; ?>"
+                    value="<?php echo $data["email"]?>">
+            <span class="invalid-feedback"><?php echo $data["emailError"] ?></span>
+
+            <input type="password"
+                   name="password"
+                   id="password"
+                   placeholder="Mot de passe"
+                   class="<?php echo ( !empty( $data['passwordError'] ) ) ? 'invalid' : ''; ?>"
+                   value="<?php echo $data["password"]?>">
+            <span class="invalid-feedback"><?php echo $data["passwordError"] ?></span>
+
+            <input type="password"
+                   name="confirmPassword"
+                   id="confirmPassword"
+                   class="<?php echo ( !empty( $data['confirmPasswordError'] ) ) ? 'invalid' : ''; ?>"
+                   placeholder="Confirmer le Mot de passe"
+                   value="<?php echo $data['confirmPassword']?>">
+            <span class="invalid-feedback"><?php echo $data["confirmPasswordError"] ?></span>
+
+            <div class="submit-div">
+                <input type="submit" name="submit_button" class="sumbit_btn" value="Envoyer">
+            </div>
+            <p class="login-text">Vous avez déja un compte ?  <a href="<?php echo URLROOT ;?>/users/login">S'identifier ici</a></p>
+        </form>
+
+    </div>
+
+    <?php require APPROOT . '/Views/inc/footer.phtml'; ?>
+
