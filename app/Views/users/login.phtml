@@ -3,6 +3,7 @@ require APPROOT . '/Views/inc/header.phtml';
 require APPROOT . '/Views/inc/navigation.phtml'; ?>
 <div class="login-wrapper">
     <div class="login-inner-div">
+        <?php flash( "register_success" ) ?>
         <form action="<?php echo  URLROOT; ?>/users/login" method="POST" >
             <h2 class="login-title">S'identifier</h2>
             <p class="login-subtitle">Pour Cotinuer vers l'administartion</p>

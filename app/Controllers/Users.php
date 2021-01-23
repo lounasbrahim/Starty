@@ -11,18 +11,21 @@ class Users extends  Controller
 
     public function __construct()
     {
-        $this->userModel = $this->model("User");
+
+        $this->userModel = $this->model( "User" );
+
     }
 
     public function register()
     {
+
         // Verifier si il y'a une method POST
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if ( $_SERVER["REQUEST_METHOD"] == "POST" ) {
             // Traiter la data reçus par POST
-            $username = FormSanitizer::sanitizeFormUsername($_POST["username"]);
-            $email = FormSanitizer::sanitizeFormEmail($_POST["email"]);
-            $password = FormSanitizer::sanitizeFormPassword($_POST["password"]);
-            $confirmPassword = FormSanitizer::sanitizeFormPassword($_POST["confirmPassword"]);
+            $username = FormSanitizer::sanitizeFormUsername( $_POST["username"] );
+            $email = FormSanitizer::sanitizeFormEmail( $_POST["email"] );
+            $password = FormSanitizer::sanitizeFormPassword( $_POST["password"] );
+            $confirmPassword = FormSanitizer::sanitizeFormPassword( $_POST["confirmPassword"] );
 
             // Initialiser la data
             $data = [
@@ -37,40 +40,51 @@ class Users extends  Controller
             ];
             // Valider la data
             // Valider le Username
-            if (!FormValidator::validateUsername($data["username"])) {
+            if ( !FormValidator::validateUsername( $data["username"] ) ) {
                 $data["usernameError"] = "Votre Username doit avoir entre 2 et 25 caractères";
             }
 
             // Valider l'email
-            if (!FormValidator::validateEmail($data["email"])) {
+            if ( !FormValidator::validateEmail( $data["email"] ) ) {
                 $data["emailError"] = "Votre Email est Invalid";
             }
 
             // Verifier si le nouveau l'email n'est pas pris par un autre user
-            if (  $this->userModel->findUserByEmail( $data["email"]) ){
+            if (  $this->userModel->findUserByEmail( $data["email"] ) ){
                 $data["emailError"] = "Cette Email est déja uitlisée";
             }
 
             // Valider le mot de passe
-            if (!FormValidator::validatePassword($data["password"])) {
+            if ( !FormValidator::validatePassword( $data["password"] ) ) {
                 $data["passwordError"] = "Votre Mot de passe doit avoir entre 6 et 25 caractères";
                 $data["confirmPasswordError"] = "Votre Mot de passe doit avoir entre 6 et 25 caractères";
             }
 
             // Valider le confirmPassword
-            if (!FormValidator::confirmPasswords($data["password"], $data["confirmPassword"])) {
+            if ( !FormValidator::confirmPasswords( $data["password"], $data["confirmPassword"] ) ) {
                 $data["confirmPasswordError"] = "Veuillez Entrer un Mot de passe identique";
             }
             // Verifier qu'il y'a pas d'erreur
-            if (empty($data["usernameError"]) &&
-                empty($data["emailError"]) &&
-                empty($data["passwordError"]) &&
-                empty($data["confirmPasswordError"])) {
-                $this->userModel->insertUserDetails($data["username"], $data["email"], $data["password"]);
-                die("Success");
+            if ( empty( $data["usernameError"] ) &&
+                 empty( $data["emailError"] ) &&
+                 empty( $data["passwordError"] ) &&
+                 empty( $data["confirmPasswordError"] ) ) {
+
+                    // hasher le mot de passe pour la db
+                     $data["password"] = hash( "sha512" , $data["password"] );
+
+                     // Enrigstrer le user
+                    if ( $this->userModel->insertUserDetails( $data["username"], $data["email"], $data["password"] ) ) {
+                        header( 'location: '. URLROOT . '/users/login' );
+                        flash( "register_success", "Vous étes maintenant Enregistré, Vous pouvez vous Connecter" );
+                        redirect( "users/login" );
+                    }else {
+                        die( "il y'a un Probléme lors de l'eregsitrement" );
+                    }
+
             } else {
                 // Sinon Charger la Vue avec les Erreurs
-                $this->view("/users/register", $data);
+                $this->view( "/users/register", $data );
             }
 
         } else {
@@ -86,17 +100,19 @@ class Users extends  Controller
                 "confirmPasswordError" => ""
             ];
             // Charger la Vue
-            $this->view("users/register", $data);
+            $this->view("users/register", $data );
         }
+
     }
 
     public function login()
     {
+
         // Verifier si il y'a une method POST
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if ( $_SERVER["REQUEST_METHOD"] == "POST" ) {
             // Traiter la data reçus par POST
-            $email = FormSanitizer::sanitizeFormEmail($_POST["email"]);
-            $password = FormSanitizer::sanitizeFormPassword($_POST["password"]);
+            $email = FormSanitizer::sanitizeFormEmail( $_POST["email"] );
+            $password = FormSanitizer::sanitizeFormPassword( $_POST["password"] );
 
             // Initialiser la data
             $data = [
@@ -107,22 +123,22 @@ class Users extends  Controller
             ];
 
             // Valider l'email
-            if (!FormValidator::validateEmail($data["email"])) {
+            if ( !FormValidator::validateEmail( $data["email"] ) ) {
                 $data["emailError"] = "Votre Email est Invalid";
             }
 
             // Valider le mot de passe
-            if (!FormValidator::validatePassword($data["password"])) {
+            if ( !FormValidator::validatePassword( $data["password"] ) ) {
                 $data["passwordError"] = "Votre Mot de passe doit avoir entre 6 et 25 caractères";
             }
 
             // Verifier qu'il y'a pas d'erreur
-            if ( empty($data["emailError"]) &&
-                empty($data["passwordError"]) ) {
-                die("Success");
+            if ( empty( $data["emailError"] ) &&
+                empty( $data["passwordError"] ) ) {
+                die( "Success" );
             } else {
                 // Sinon Charger la Vue avec les Erreurs
-                $this->view("/users/login", $data);
+                $this->view( "/users/login", $data );
             }
 
         } else {
@@ -132,7 +148,7 @@ class Users extends  Controller
                 "emailError" => "",
                 "passwordError" => ""
             ];
-            $this->view('users/login', $data);
+            $this->view( 'users/login', $data );
         }
 
     }

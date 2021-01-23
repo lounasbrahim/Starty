@@ -178,6 +178,23 @@ input[type="submit"]{
     font-size: 13px;
     color: #a5a5a5;
 }
+.alert-login{
+    text-align: left;
+    background-color: #60d09d;
+    color: white;
+    font-size: 13px;
+    width: 100%;
+    border-radius: 0.35em ;
+    margin-bottom: 30px;
+    padding: 20px;
+    font-weight: 700;
+    transition: all 5s ease-out;
+    opacity: 1;
+    transition: all 0.5s ease-out;
+}
+.slide {
+    transform: translateX(-100%);
+}
 
 
 
